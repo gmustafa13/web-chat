@@ -1,7 +1,7 @@
 var userModel = require("../model/userModel");
 var express = require("express");
 var router = express.Router();
-const base64 = require('base-64')
+const passport = require('passport')
 const {
   TE,
   ReS
@@ -45,5 +45,9 @@ router.post("/register", async (req, res) => {
     res.redirect("/signup");
   }
 });
-router.post('/login',async(req,res)=>{})
+router.post("/login", passport.authenticate('local', {
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
 module.exports = router;
