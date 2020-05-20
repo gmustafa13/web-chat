@@ -3,8 +3,9 @@ const user = require('./schema/User');
 const jwt = require('jsonwebtoken')
 
 module.exports = async function initialize(passport) {
+    var userData 
     const authenticateUser = async (email, password, done) => {
-        let userData = await user.findOne({
+         userData = await user.findOne({
             email: email
         });
         if (userData == null || userData == 'undefined') {
@@ -35,10 +36,8 @@ module.exports = async function initialize(passport) {
         done(null, userData.email)
     })
     passport.deserializeUser((id, done) => {
-        return done(null, async emailData => {
-            return await user.findOne({
-                email: id
-            })
-        })
+        return done(null,
+            userData)
+
     })
 }

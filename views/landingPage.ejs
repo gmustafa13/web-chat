@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Simple Group Chat on Node.js</title>
+    <div class="jumbotron text-center">
+        <h1>List Of User</h1>
+    </div>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <label for="profile">YouProfile:</label>
+        <div><%=userData.name%></div>
+    </div>
+    <div class='container'>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr >
+                    <th>name</th>
+                    <th>email</th>
+                    <th>want To Chat</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <% abc.forEach(function(eachPerson ,index){ %>
+                <tr id="`${eachPerson}`" onclick="gulam(eachPerson)">
+                    <td> <%= eachPerson.name %> </td>
+                    <td> <%= eachPerson.email %> </td>
+                    <td> <% include head.html %></td>
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+        </table>
+
+    </div>
+</body>
+<script >
+    
+// $("tr").click(function(eachPerson){
+//     console.log("index",eachPerson)
+// })
+function gulam(eachPerson){
+    console.log("jjj",eachPerson)
+}
+</script>
+
+</html>

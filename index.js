@@ -3,11 +3,15 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const db = require('./dataBase');
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+const cors = require('cors')
+// const http = require('http').Server(app);
+// const io = require('socket.io')(http);
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 const passport = require("passport")
 const flash = require('express-flash');
 const session = require('express-session');
+app.use(cors())
 if (process.env.NODE_ENV != 'production') {
   require('dotenv').config();
 }
@@ -21,7 +25,7 @@ const initializePassport = require('./passport.config');
  * middle wear use
  */
 app.use(express.urlencoded({
-  extended: true
+  extended: false
 }))
 app.use(bodyParser.json());
 app.set('view-engine', 'ejs');
@@ -29,7 +33,7 @@ app.use(flash());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized:false
+  saveUninitialized: false
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -66,6 +70,10 @@ io.sockets.on('connection', function (socket) {
   socket.on('chat_message', function (message) {
     io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
   });
+  socket.on('private message', (from, msg) => {
+    io.emit("private massage"+msg+ "sended by "+from)
+    console.log('I received a private message by ', from, ' saying ', msg);
+  });
 
 });
 
@@ -73,6 +81,6 @@ io.sockets.on('connection', function (socket) {
 // app.listen(port, () => {
 //     console.log("listening on port "+port)
 // })
-const server = http.listen(3000, function () {
+server.listen(3000, function () {
   console.log('listening on *:3000');
 });
